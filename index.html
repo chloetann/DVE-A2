@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Model Viewer</title>
+
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+
+<style>
+body{
+  margin:0;
+  overflow:hidden;
+  font-family: Arial, sans-serif;
+}
+
+/* MODEL */
+model-viewer{
+  width:100vw;
+  height:100vh;
+}
+
+/* OSIM LOGO */
+.brand-logo{
+  position:absolute;
+  top:40px;
+  left:60px;
+  width:220px;
+  z-index:20;
+  opacity:0.95;
+  filter: drop-shadow(0 10px 25px rgba(0,0,0,0.15));
+}
+
+/* HOTSPOT DOT */
+.Hotspot{
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  background:white;
+  border:2px solid #333;
+  padding:0;
+  cursor:pointer;
+  transition:transform 0.2s ease, box-shadow 0.2s ease;
+  position:relative;
+}
+
+.Hotspot:hover{
+  transform:scale(1.2);
+  box-shadow:0 0 8px rgba(0,0,0,0.4);
+}
+
+.Hotspot:focus{
+  outline:none;
+}
+
+.HotspotAnnotation{
+  position:absolute;
+  left:24px;
+  top:-8px;
+  background:rgba(255,255,255,0.98);
+  padding:8px 14px;
+  border-radius:20px;
+  font-size:13px;
+  font-weight:500;
+  white-space:nowrap;
+  box-shadow:0 8px 24px rgba(0,0,0,0.25);
+  visibility:hidden;
+}
+
+/* CONTROL PANEL */
+.control-panel{
+  position:absolute;
+  bottom:60px;
+  left:60px;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+  background:rgba(255,255,255,0.95);
+  padding:20px 25px;
+  border-radius:12px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.15);
+  z-index:10;
+}
+
+.control-panel button{
+  margin:5px 5px 0 0;
+  padding:6px 12px;
+  border-radius:6px;
+  border:1px solid #ccc;
+  background:white;
+  cursor:pointer;
+  font-size:12px;
+}
+
+.control-panel button:hover{
+  background:#f0f0f0;
+}
+</style>
+</head>
+<body>
+<img src="logo.jpg" style="position:absolute; top:20px; left:0px; width:320px; z-index:20;">
+
+<model-viewer
+  id="gear"
+  src="DVE ASSIGNMENT 2.glb"
+  camera-controls
+  shadow-intensity="1"
+  animation-name="PHONE"
+  camera-orbit="auto auto auto"
+  camera-transition="300ms"
+  field-of-view="30deg">
+
+  <!-- HOTSPOTS -->
+
+  <button class="Hotspot" slot="hotspot-1"
+    data-surface="0 0 2436 2438 2510 0.395 0.148 0.458"
+    data-visibility-attribute="visible"
+    onMouseOver="addhotspot1()"
+    onMouseOut="removehotspot1()">
+      <div class="HotspotAnnotation" id="hotspot1">Physical UI</div>
+  </button>
+
+  <button class="Hotspot" slot="hotspot-2"
+    data-surface="9 0 337 339 403 0.513 0.245 0.242"
+    data-visibility-attribute="visible"
+    onMouseOver="addhotspot2()"
+    onMouseOut="removehotspot2()">
+      <div class="HotspotAnnotation" id="hotspot2">Phone dock</div>
+  </button>
+
+  <button class="Hotspot" slot="hotspot-3"
+    data-surface="10 0 787 759 788 0.378 0.390 0.232"
+    data-visibility-attribute="visible"
+    onMouseOver="addhotspot3()"
+    onMouseOut="removehotspot3()">
+      <div class="HotspotAnnotation" id="hotspot3">Lamp</div>
+  </button>
+
+  <button class="Hotspot" slot="hotspot-4"
+    data-surface="0 0 4382 1278 4481 0.795 0.136 0.069"
+    data-visibility-attribute="visible"
+    onMouseOver="addhotspot4()"
+    onMouseOut="removehotspot4()">
+      <div class="HotspotAnnotation" id="hotspot4">Speaker</div>
+  </button>
+
+</model-viewer>
+
+<!-- CONTROL PANEL -->
+<div class="control-panel">
+
+  <div>
+    <strong>View</strong><br>
+    <button onclick="setOrbit('0deg 90deg auto')">Front</button>
+    <button onclick="setOrbit('90deg 90deg auto')">Side</button>
+    <button onclick="setOrbit('0deg 0deg auto')">Top</button>
+    <button onclick="setOrbit('0deg 180deg auto')">Bottom</button>
+  </div>
+
+  <div>
+    <strong>Variant</strong><br>
+    <button onclick="VBtn01()">Beige</button>
+    <button onclick="VBtn02()">Rose Gold</button>
+    <button onclick="VBtn03()">Marble</button>
+    <button onclick="VBtn04()">Metal Blue</button>
+  </div>
+
+  <div>
+    <strong>Animation</strong><br>
+    <button onclick="Btn01()">Play Animation 01</button>
+    <button onclick="Btn02()">Play Animation 02</button>
+    <button onclick="pauseAnimation()">Pause</button>
+  </div>
+
+</div>
+
+<script>
+const gear = document.getElementById('gear');
+
+function setOrbit(orbit){
+  gear.cameraOrbit = orbit;
+}
+
+function VBtn01(){ gear.variantName="v1"; }
+function VBtn02(){ gear.variantName="v2"; }
+function VBtn03(){ gear.variantName="v3"; }
+function VBtn04(){ gear.variantName="v4"; }
+
+function Btn01(){
+  gear.pause();
+  gear.animationName="PHONE";
+  gear.play();
+}
+
+function Btn02(){
+  gear.pause();
+  gear.animationName="FRAME TGT.002";
+  gear.play();
+}
+
+function pauseAnimation(){
+  gear.pause();
+}
+
+function addhotspot1(){
+  document.getElementById("hotspot1").style.visibility="visible";
+}
+function removehotspot1(){
+  document.getElementById("hotspot1").style.visibility="hidden";
+}
+
+function addhotspot2(){
+  document.getElementById("hotspot2").style.visibility="visible";
+}
+function removehotspot2(){
+  document.getElementById("hotspot2").style.visibility="hidden";
+}
+
+function addhotspot3(){
+  document.getElementById("hotspot3").style.visibility="visible";
+}
+function removehotspot3(){
+  document.getElementById("hotspot3").style.visibility="hidden";
+}
+
+function addhotspot4(){
+  document.getElementById("hotspot4").style.visibility="visible";
+}
+function removehotspot4(){
+  document.getElementById("hotspot4").style.visibility="hidden";
+}
+</script>
+
+</body>
+</html>
